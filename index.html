@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Botify - Servicios Profesionales para Discord</title>
+    <title>Botify - Servidores de Discord</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
     <style>
@@ -802,6 +802,97 @@
                 flex-direction: column;
             }
         }
+    #order {
+            display: none;
+            min-height: 100vh;
+            padding: 100px 5% 80px;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        #order.active {
+            display: block;
+        }
+        
+        .order-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(30, 33, 36, 0.8);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .order-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .order-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .order-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-container {
+            background: rgba(46, 49, 54, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .form-container iframe {
+            width: 100%;
+            height: 1200px;
+            border: none;
+            border-radius: 10px;
+        }
+        
+        .back-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 30px auto 0;
+        }
+        
+        .back-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .order-container {
+                padding: 20px;
+            }
+            
+            .form-container {
+                padding: 15px;
+            }
+            
+            .form-container iframe {
+                height: 1400px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1036,6 +1127,25 @@
         </div>
     </section>
     
+<!-- Nueva Sección de Pedido -->
+    <section id="order" class="page">
+        <div class="order-container animate-on-scroll">
+            <div class="order-header">
+                <h2>Realiza tu Pedido</h2>
+                <p>Completa el siguiente formulario para procesar tu compra. Por favor, completa todos los campos requeridos para que podamos atender tu solicitud lo antes posible.</p>
+            </div>
+            
+            <div class="form-container">
+                <!-- Aquí va el iframe con el formulario de Google -->
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScyqP0BvUFC2Vv1_gnQrR3CigPI4ANNamUuvS5wzQCkI5G6Ag/viewform?embedded=true" width="640" height="2426" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe> 
+            </div>
+            
+            <button class="back-button" onclick="showPage('pricing')">
+                <i class="fas fa-arrow-left"></i> Volver a Planes
+            </button>
+        </div>
+    </section>
+
     <!-- Plan Details Modal -->
     <div class="modal-overlay" id="planModal">
         <div class="modal">
@@ -1258,6 +1368,43 @@
                 navLinks.classList.remove('active');
             });
         });
+
+        // Función para mostrar la página de pedido
+        function showOrderPage() {
+            // Cerrar el modal si está abierto
+            closePlanModal();
+            
+            // Mostrar la página de pedido
+            showPage('order');
+        }
+        
+        // Actualizar la función showPlanDetails para usar showOrderPage
+        function showPlanDetails(plan) {
+            const planData = planDetails[plan];
+            
+            modalContent.innerHTML = `
+                <h2>${planData.title}</h2>
+                <p><strong>${planData.price}</strong> - ${planData.period}</p>
+                <p>${planData.description}</p>
+                
+                <h3>Características Incluidas:</h3>
+                <ul class="modal-features">
+                    ${planData.features.map(feature => `<li><i class="fas fa-check"></i> ${feature}</li>`).join('')}
+                </ul>
+                
+                <div class="modal-buttons">
+                    <button class="cta-button" onclick="showOrderPage()">
+                        <i class="fas fa-shopping-cart"></i> Comprar Ahora
+                    </button>
+                    <button class="cta-button secondary" onclick="closePlanModal()">
+                        <i class="fas fa-times"></i> Cerrar
+                    </button>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
         
         // Animation on Scroll
         function checkScroll() {
