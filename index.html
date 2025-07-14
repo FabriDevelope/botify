@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botify - Servicios Profesionales para Discord</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5865F2;
+            --primary-dark: #4752c4;
+            --secondary: #57F287;
+            --dark: #23272A;
+            --darker: #1e2124;
+            --light: #F6F6F6;
+            --accent: #ED4245;
+            --accent-light: #ff7073;
+            --text: #2c2f33;
+            --text-light: #99aab5;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Background Animations */
+        .background-animations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(88, 101, 242, 0.2);
+            animation: floatParticle linear infinite;
+        }
+        
+        .discord-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.05);
+            animation: floatIcon linear infinite;
+        }
+        
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(20px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes floatIcon {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.05;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(40px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(30, 33, 36, 0.95);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            color: var(--secondary);
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .nav-links a.active::after {
+            display: none;
+        }
+        
+        .cta-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+        }
+        
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.6);
+        }
+        
+        .cta-button.secondary {
+            background: var(--secondary);
+            box-shadow: 0 4px 15px rgba(87, 242, 135, 0.4);
+        }
+        
+        .cta-button.secondary:hover {
+            background: #4ad978;
+            box-shadow: 0 6px 20px rgba(87, 242, 135, 0.6);
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        /* Page Sections */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 100px 5% 80px;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 120px 5% 80px;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            font-family: 'Montserrat', sans-serif;
+            animation: slideInLeft 1s ease;
+        }
+        
+        .hero h1 span {
+            color: var(--secondary);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-light);
+            animation: slideInLeft 1.2s ease;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            animation: slideInLeft 1.4s ease;
+        }
+        
+        .hero-image {
+            position: relative;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .hero-image img {
+            max-width: 600px;
+            width: 100%;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.4));
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 5%;
+            background: rgba(35, 39, 42, 0.7);
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 60px;
+            font-size: 1.1rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background: rgba(46, 49, 54, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transform: translateY(0);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Pricing Section */
+        .pricing {
+            padding: 100px 5%;
+            background: var(--darker);
+        }
+        
+        .pricing-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: rgba(46, 49, 54, 0.7);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(0);
+            cursor: pointer;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--secondary);
+            color: var(--darker);
+            padding: 5px 30px;
+            transform: rotate(45deg);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        
+        .pricing-header {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .pricing-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .pricing-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+        
+        .pricing-period {
+            color: var(--text-light);
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .pricing-features li i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        
+        /* Plan Details Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background: var(--darker);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            padding: 40px;
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: var(--transition);
+            border: 1px solid var(--primary);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+        
+        .modal-content {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+        
+        .modal-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .modal-features {
+            margin: 30px 0;
+            columns: 2;
+            column-gap: 30px;
+        }
+        
+        .modal-features li {
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            break-inside: avoid;
+        }
+        
+        .modal-features li i {
+            color: var(--secondary);
+            margin-right: 10px;
+            min-width: 20px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .about-image {
+            flex: 1;
+            position: relative;
+        }
+        
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: var(--text-light);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .team-member {
+            background: rgba(46, 49, 54, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .member-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 3px solid var(--primary);
+        }
+        
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .member-socials {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            transition: var(--transition);
+        }
+        
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 60px 5% 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+        
+        .footer-links a i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 150px 5% 80px;
+            }
+            
+            .hero-content {
+                margin-bottom: 50px;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .modal-features {
+                columns: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                flex-direction: column;
+                background: var(--darker);
+                width: 70%;
+                height: calc(100vh - 80px);
+                padding: 40px 20px;
+                transition: var(--transition);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .hamburger {
+                display: block;
+                font-size: 1.8rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .pricing-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animations -->
+    <div class="background-animations">
+        <div class="particles" id="particles"></div>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo" onclick="showPage('home')">
+            <i class="fas fa-robot"></i> Botify
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="#" class="active" onclick="showPage('home')">Inicio</a></li>
+            <li><a href="#" onclick="showPage('about')">Nosotros</a></li>
+            <li><a href="#" onclick="showPage('pricing')">Planes</a></li>
+        </ul>
+        
+        <button class="cta-button" onclick="showPage('pricing')">Ver Planes</button>
+        
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+    
+    <!-- Home Page -->
+    <section id="home" class="page active">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Impulsa tu comunidad de <span>Discord</span> al siguiente nivel</h1>
+                <p>Servicios profesionales de creación y gestión de servidores Discord. Diseñamos, configuramos y optimizamos tu comunidad para un crecimiento exponencial.</p>
+                <div class="hero-buttons">
+                    <button class="cta-button" onclick="showPage('pricing')">Ver Planes</button>
+                    <button class="cta-button secondary" onclick="window.location.href='https://discord.gg/2ZvgGCYjDZ'">
+                        <i class="fab fa-discord"></i> Unite al Discord
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://i.imgur.com/j49gm3k.png" alt="Discord Server Example">
+            </div>
+            <div class="hero-bg"></div>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="features">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <p class="section-subtitle">Ofrecemos servidores de discord completos para tu comunidad, marca o quizas servidor de amigos.
+
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Diseño Personalizado</h3>
+                    <p>Servidores únicos con temáticas personalizadas, roles, canales y categorías bien estructuradas.</p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Bots Especializados</h3>
+                    <p>Implementación de bots para moderación, música, niveles, economía y funciones personalizadas.</p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Seguridad Avanzada</h3>
+                    <p>Protección contra raids, spam y usuarios malintencionados con sistemas de verificación avanzados.</p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Optimización</h3>
+                    <p>Análisis y mejora de servidores existentes para aumentar la participación y retención de usuarios.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pricing Preview -->
+        <div class="pricing">
+            <h2 class="section-title">Planes Populares</h2>
+            <p class="section-subtitle">Soluciones adaptadas a todo tipo de comunidades</p>
+            
+            <div class="pricing-container">
+                <div class="pricing-card animate-on-scroll" data-plan="starter">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Starter</h3>
+                        <div class="pricing-price">5-10 USD$</div>
+                        <div class="pricing-period">Paquete único</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Estructura de canales (texto, voz y categorías)</li>
+                        <li><i class="fas fa-check"></i> Roles básicos con jerarquía y colores</li>
+                        <li><i class="fas fa-check"></i> Bots esenciales (moderación, música o niveles)</li>
+                        <li><i class="fas fa-check"></i> Mensaje de bienvenida simple</li>
+                        <li><i class="fas fa-check"></i> Diseño con emojis y nombres claros</li>
+                        <li><i class="fas fa-check"></i> Configuración rápida y ordenada</li>
+                    </ul>
+                    <button class="cta-button">Ver Detalles</button>
+                </div>
+                
+                <div class="pricing-card animate-on-scroll" data-plan="pro">
+                    <div class="popular-badge">POPULAR</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Pro</h3>
+                        <div class="pricing-price">15-20 USD$</div>
+                        <div class="pricing-period">Paquete único</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Canales personalizados por sección (eventos, sugerencias, soporte, etc.)</li>
+                        <li><i class="fas fa-check"></i> Sistema de reglas y roles automáticos</li>
+                        <li><i class="fas fa-check"></i> Bots configurados (tickets, logs, anti-spam, reacción de roles, etc.)</li>
+                        <li><i class="fas fa-check"></i> Diseño visual completo con emojis, separadores y estructura estética</li>
+                        <li><i class="fas fa-check"></i> Asesoramiento en seguridad, permisos y usabilidad</li>
+                        <li><i class="fas fa-check"></i> Revisión final antes de la entrega</li>
+                    </ul>
+                    <button class="cta-button">Ver Detalles</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Page -->
+    <section id="about" class="page">
+        <div class="about-content">
+            <div class="about-image animate-on-scroll">
+                <img src="https://i.imgur.com/j49gm3k.png" alt="Equipo Botify">
+            </div>
+            <div class="about-text">
+                <h2>La historia de Botify</h2>
+                <p>Botify nació como una idea simple:"¿Y si empiezo a armar servidores de discords completos, buenos, bien profesionales y los cobro?"</p>
+                <p>Lo que arrancó ayudando a amigos, se convirtió en un servicio serio: personalización, diseño, bots, seguridad, y ahora… páginas web. Todo desde cero, hecho a medida, y con estilo.Nada de plantillas recicladas. Cada servidor tiene su identidad.</p>
+                <p>La gente empezó a confiar. No porque lo vendía como negocio, sino porque entregaba calidad, rápido, y con atención real. Así creció Botify: desde una notebook, en una clase aburrida, hasta convertirse en una marca que arma espacios digitales con personalidad.</p>
+                <p>Hoy, Botify no solo crea servidores: crea presencia.Te arma la base de tu comunidad, tu grupo, tu proyecto… y si querés algo más, te lo sube a la web en el mismo día.</p>
+                <p>Rápido. Ordenado. Estético. Profesional.</p>
+                <h3>Eso es Botify.</h3>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Page -->
+    <section id="pricing" class="page">
+        <div class="pricing">
+            <h2 class="section-title">Nuestros Planes</h2>
+            <p class="section-subtitle">Elige el paquete perfecto para tu comunidad</p>
+            
+            <div class="pricing-container">
+                <div class="pricing-card animate-on-scroll" data-plan="starter">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Starter</h3>
+                        <div class="pricing-price">5-10 USD$</div>
+                        <div class="pricing-period">Paquete único</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Estructura de canales (texto, voz y categorías)</li>
+                        <li><i class="fas fa-check"></i> Roles básicos con jerarquía y colores</li>
+                        <li><i class="fas fa-check"></i> Bots esenciales (moderación, música o niveles)</li>
+                        <li><i class="fas fa-check"></i> Mensaje de bienvenida simple</li>
+                        <li><i class="fas fa-check"></i> Diseño con emojis y nombres claros</li>
+                        <li><i class="fas fa-check"></i> Configuración rápida y ordenada</li>
+                    </ul>
+                    <button class="cta-button">Ver Detalles</button>
+                </div>
+                
+                <div class="pricing-card animate-on-scroll" data-plan="pro">
+                    <div class="popular-badge">POPULAR</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Pro</h3>
+                        <div class="pricing-price">15-20 USD$</div>
+                        <div class="pricing-period">Pensado para comunidades en crecimiento, creadores de contenido o proyectos con más actividad.</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Todo lo des starter más:</li>
+                        <li><i class="fas fa-check"></i> Canales personalizados por sección (eventos, sugerencias, soporte, etc.)</li>
+                        <li><i class="fas fa-check"></i> Sistema de reglas y roles automáticos</li>
+                        <li><i class="fas fa-check"></i> Bots configurados (tickets, logs, anti-spam, reacción de roles, etc.)</li>
+                        <li><i class="fas fa-check"></i> Diseño visual completo con emojis, separadores y estructura estética</li>
+                        <li><i class="fas fa-check"></i> Asesoramiento en seguridad, permisos y usabilidad</li>
+                        <li><i class="fas fa-check"></i> Revisión final antes de la entrega</li>
+                    </ul>
+                    <button class="cta-button">Ver Detalles</button>
+                </div>
+                
+                <div class="pricing-card animate-on-scroll" data-plan="premium">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Premium</h3>
+                        <div class="pricing-price">25-30 USD$</div>
+                        <div class="pricing-period">Hecho para marcas, grandes comunidades o proyectos que buscan un servidor de alta calidad.</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Todo lo del Pro más:</li>
+                        <li><i class="fas fa-check"></i> Diseño exclusivo adaptado a tu temática o estilo</li>
+                        <li><i class="fas fa-check"></i> Logo personalizado para el servidor</li>
+                        <li><i class="fas fa-check"></i> Zona de staff privada con logs, comandos y backups</li>
+                        <li><i class="fas fa-check"></i> Bots avanzados (sistemas de verificación, economía, formularios, IA, etc.)</li>
+                        <li><i class="fas fa-check"></i> Guía rápida para administradores</li>
+                        <li><i class="fas fa-check"></i> Soporte post-entrega para ajustes o dudas</li>
+                    </ul>
+                    <button class="cta-button">Ver Detalles</button>
+                </div>
+                
+                <div class="pricing-card animate-on-scroll" data-plan="express">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Express</h3>
+                        <div class="pricing-price">60-65 USD$</div>
+                        <div class="pricing-period">Paquete único</div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Servidor de Discord (canales, roles, bots, etc.)</li>
+                        <li><i class="fas fa-check"></i> Canales ordenados y con diseño claro (texto, voz, categorías)</li>
+                        <li><i class="fas fa-check"></i> Página web estética (ideal para presentarte, mostrar links o el server)</li>
+                        <li><i class="fas fa-check"></i> Hosting gratis en Netlify</li>
+                        <li><i class="fas fa-check"></i> Dominio personalizado .netlify.app o uno que comrpa el cliente</li>
+                        <li><i class="fas fa-check"></i> Soporte prioritario 24/7</li>
+                        <li><i class="fas fa-check"></i> Diseño responsive (se ve bien en PC y celular)</li>
+                        <li><i class="fas fa-check"></i> Edición rápida y soporte express</li>
+                    </ul>
+                    <button class="cta-button">Ver Detalles</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Plan Details Modal -->
+    <div class="modal-overlay" id="planModal">
+        <div class="modal">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="modal-content" id="modalContent">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Botify</h3>
+                <p>Creando servidores extraordinarios de Discord desde 2023. Servicios profesionales de diseño, configuración y gestión con bots de entretenimiento y seguridad.</p>
+                <div class="member-socials" style="margin-top: 20px;">
+                    <a href="https://discord.gg/2ZvgGCYjDZ" class="social-icon"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Enlaces Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showPage('home')"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="#" onclick="showPage('about')"><i class="fas fa-users"></i> Nosotros</a></li>
+                    <li><a href="#" onclick="showPage('pricing')"><i class="fas fa-tags"></i> Planes</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Contacto</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-envelope"></i> info@botify.com</a></li>
+                    <li><a href="https://discord.gg/2ZvgGCYjDZ"><i class="fab fa-discord"></i> Discord Support</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Lunes a Viernes 15:00Hs - 21:00Hs</a></li>
+                    <li><a href="#"><i class="fas fa-clock"></i> Sabado y Domingo 14:00Hs - 17:00Hs</a></li>
+                    <li><a href="#" onclick="window.location.href='https://discord.gg/2ZvgGCYjDZ'">
+                        <i class="fab fa-discord"></i> Unirse a nuestra Comunidad
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 Botify. Todos los derechos reservados.
+        </div>
+    </footer>
+    
+    <script>
+        // Plan details data
+        const planDetails = {
+    starter: {
+        title: "Plan Starter",
+        price: "5 - 10 USD",
+        period: "Paquete único",
+        description: "Perfecto para comunidades pequeñas o nuevos servidores que necesitan una base sólida.",
+        features: [
+            "Estructura de canales clara y funcional, incluyendo canales de texto, voz y categorías básicas para una buena organización.",
+            "Roles básicos configurados con jerarquía y colores diferenciados para facilitar la gestión y permisos.",
+            "Bots esenciales integrados, que pueden incluir moderación automática, música o sistema básico de niveles.",
+            "Mensaje de bienvenida simple configurado para dar la bienvenida a nuevos miembros de forma automática.",
+            "Diseño estético con uso adecuado de emojis y nombres claros para mejorar la experiencia visual del servidor.",
+            "Configuración rápida y ordenada, garantizando que el servidor quede listo para usar en poco tiempo."
+        ]
+    },
+    pro: {
+        title: "Plan Pro",
+        price: "15 - 20 USD",
+        period: "Pensado para comunidades en crecimiento, creadores de contenido o proyectos con más actividad.",
+        description: "La opción más popular para comunidades que quieren mayor estructura, personalización y funcionalidades avanzadas.",
+        features: [
+            "Incluye todo lo del Plan Starter para asegurar una base sólida.",
+            "Canales personalizados organizados por secciones temáticas, como eventos, sugerencias, soporte y más, para mejor navegación.",
+            "Sistema de reglas implementado mediante mensajes embed y roles automáticos asignados con reacciones para facilitar el cumplimiento.",
+            "Bots configurados para funciones avanzadas como tickets de soporte, registros de actividad (logs), anti-spam y asignación de roles por reacción.",
+            "Diseño visual completo que incorpora emojis personalizados, separadores y una estructura estética para una experiencia atractiva.",
+            "Asesoramiento en seguridad, permisos y mejores prácticas para administrar el servidor con eficiencia.",
+            "Revisión final antes de la entrega para garantizar que todo funcione correctamente y esté optimizado."
+        ]
+    },
+    premium: {
+        title: "Plan Premium",
+        price: "25 - 30 USD",
+        period: "Hecho para marcas, grandes comunidades o proyectos que buscan un servidor de alta calidad.",
+        description: "Diseñado para proyectos profesionales que requieren una configuración avanzada y diseño exclusivo.",
+        features: [
+            "Incluye todo lo del Plan Pro para mantener una base sólida y completa.",
+            "Diseño exclusivo personalizado y adaptado completamente a la temática o estilo del cliente para destacar.",
+            "Creación de un logo personalizado para el servidor, aumentando la identidad visual y profesionalismo.",
+            "Zona privada para el staff, con canales exclusivos que incluyen registros (logs), comandos administrativos y backups para seguridad.",
+            "Bots avanzados integrados, incluyendo sistemas de verificación para evitar bots maliciosos, economía virtual, formularios personalizados e incluso integración con IA.",
+            "Guía rápida para administradores, facilitando la gestión y capacitación del equipo de moderación.",
+            "Soporte post-entrega para ajustes, resolución de dudas y mejoras durante un período acordado."
+        ]
+    },
+    express: {
+        title: "Plan Express",
+        price: "60 - 65 USD",
+        period: "Paquete único",
+        description: "Servicio premium con entrega ultrarrápida para proyectos urgentes y exclusivos.",
+        features: [
+            "Configuración completa de servidor de Discord con canales, roles y bots totalmente personalizados.",
+            "Canales organizados con un diseño claro y profesional, incluyendo texto, voz y categorías bien definidas.",
+            "Diseño y desarrollo de página web estética y funcional, ideal para presentación, mostrar enlaces y promocionar el servidor.",
+            "Hosting gratuito en Netlify para la página web, con posibilidad de dominio personalizado .netlify.app o dominio propio comprado por el cliente.",
+            "Soporte prioritario 24/7 para resolver cualquier inconveniente o consulta de forma rápida y eficiente.",
+            "Diseño responsive que asegura una correcta visualización tanto en dispositivos móviles como en PC.",
+            "Edición rápida y soporte express para adaptaciones o cambios necesarios luego de la entrega."
+        ]
+    }
+};
+
+        
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update active link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Set the clicked link as active
+            if(pageId === 'home') {
+                document.querySelector('.nav-links a:first-child').classList.add('active');
+            } else if(pageId === 'about') {
+                document.querySelectorAll('.nav-links a')[1].classList.add('active');
+            } else if(pageId === 'pricing') {
+                document.querySelectorAll('.nav-links a')[2].classList.add('active');
+            }
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Plan Details Modal
+        const modal = document.getElementById('planModal');
+        const closeModal = document.getElementById('closeModal');
+        const modalContent = document.getElementById('modalContent');
+        
+        // Show modal with plan details
+        function showPlanDetails(plan) {
+            const planData = planDetails[plan];
+            
+            // Create modal content
+            modalContent.innerHTML = `
+                <h2>${planData.title}</h2>
+                <p><strong>${planData.price}</strong> - ${planData.period}</p>
+                <p>${planData.description}</p>
+                
+                <h3>Características Incluidas:</h3>
+                <ul class="modal-features">
+                    ${planData.features.map(feature => `<li><i class="fas fa-check"></i> ${feature}</li>`).join('')}
+                </ul>
+                
+                <div class="modal-buttons">
+                    <button class="cta-button" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLScyqP0BvUFC2Vv1_gnQrR3CigPI4ANNamUuvS5wzQCkI5G6Ag/viewform?usp=dialog'">
+                        <i class="fas fa-shopping-cart"></i> Comprar Ahora
+                    </button>
+                    <button class="cta-button secondary" onclick="closePlanModal()">
+                        <i class="fas fa-times"></i> Cerrar
+                    </button>
+                </div>
+            `;
+            
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal
+        function closePlanModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Event listeners
+        document.querySelectorAll('.pricing-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                // Don't trigger if clicked on the button
+                if (!e.target.classList.contains('cta-button')) {
+                    const plan = card.getAttribute('data-plan');
+                    showPlanDetails(plan);
+                }
+            });
+            
+            // Button inside card
+            const button = card.querySelector('.cta-button');
+            button.addEventListener('click', () => {
+                const plan = card.getAttribute('data-plan');
+                showPlanDetails(plan);
+            });
+        });
+        
+        closeModal.addEventListener('click', closePlanModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closePlanModal();
+            }
+        });
+        
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Animation on Scroll
+        function checkScroll() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if(elementPosition < windowHeight * 0.9) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', checkScroll);
+        window.addEventListener('load', checkScroll);
+        
+        // Background Animations
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            
+            // Create particles
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size (3px to 10px)
+                const size = Math.random() * 7 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration (10s to 30s)
+                const duration = Math.random() * 20 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Create floating Discord icons
+            for (let i = 0; i < 20; i++) {
+                const icon = document.createElement('div');
+                icon.classList.add('discord-icon');
+                icon.innerHTML = '<i class="fab fa-discord"></i>';
+                
+                // Random position
+                icon.style.left = `${Math.random() * 100}%`;
+                icon.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration (15s to 40s)
+                const duration = Math.random() * 25 + 15;
+                icon.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                icon.style.animationDelay = `${Math.random() * 10}s`;
+                
+                // Random size (1.5rem to 3rem)
+                const size = Math.random() * 1.5 + 1.5;
+                icon.style.fontSize = `${size}rem`;
+                
+                // Random opacity (0.05 to 0.2)
+                const opacity = Math.random() * 0.15 + 0.05;
+                icon.style.opacity = opacity;
+                
+                particlesContainer.appendChild(icon);
+            }
+        }
+        
+        // Initialize animations
+        createParticles();
+    </script>
+</body>
+</html>
