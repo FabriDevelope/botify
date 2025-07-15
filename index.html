@@ -896,6 +896,16 @@
                 height: 1400px;
             }
         }
+
+        .modal-buttons {
+            position: absolute;
+            top: 20px;
+            right: 80px;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -1302,24 +1312,25 @@
             
             // Create modal content
             modalContent.innerHTML = `
-                <h2>${planData.title}</h2>
-                <p><strong>${planData.price}</strong> - ${planData.period}</p>
-                <p>${planData.description}</p>
-                
-                <h3>Características Incluidas:</h3>
-                <ul class="modal-features">
-                    ${planData.features.map(feature => `<li><i class="fas fa-check"></i> ${feature}</li>`).join('')}
-                </ul>
-                
-                <div class="modal-buttons">
-                    <button class="cta-button" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLScyqP0BvUFC2Vv1_gnQrR3CigPI4ANNamUuvS5wzQCkI5G6Ag/viewform?usp=dialog'">
-                        <i class="fas fa-shopping-cart"></i> Comprar Ahora
-                    </button>
-                    <button class="cta-button secondary" onclick="closePlanModal()">
-                        <i class="fas fa-times"></i> Cerrar
-                    </button>
-                </div>
-            `;
+    <div class="modal-buttons">
+        <button class="cta-button" onclick="showOrderPage()">
+            <i class="fas fa-shopping-cart"></i> Comprar Ahora
+        </button>
+        <button class="cta-button secondary" onclick="closePlanModal()">
+            <i class="fas fa-times"></i> Cerrar
+        </button>
+    </div>
+
+    <h2>${planData.title}</h2>
+    <p><strong>${planData.price}</strong> - ${planData.period}</p>
+    <p>${planData.description}</p>
+    
+    <h3>Características Incluidas:</h3>
+    <ul class="modal-features">
+        ${planData.features.map(feature => `<li><i class="fas fa-check"></i> ${feature}</li>`).join('')}
+    </ul>
+`;
+
             
             // Show modal
             modal.classList.add('active');
