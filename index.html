@@ -955,6 +955,63 @@
                 right: -35px;
             }
         }
+    .privacy-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(30, 33, 36, 0.8);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .privacy-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .privacy-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .privacy-content {
+            background: rgba(46, 49, 54, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .privacy-content h3 {
+            color: var(--primary);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .privacy-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .privacy-content ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .privacy-content li {
+            margin-bottom: 10px;
+        }
+        
+        .back-button.privacy {
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -1256,6 +1313,101 @@
         </div>
     </section>
 
+    <section id="privacy" class="page">
+        <div class="privacy-container animate-on-scroll">
+            <button class="back-button privacy" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Volver
+            </button>
+            
+            <div class="privacy-header">
+                <h2>Política de Privacidad de Botify</h2>
+                <p>Última actualización: 15 de Julio, 2025</p>
+                <p>En Botify, la privacidad y la seguridad de nuestros usuarios son prioridades fundamentales. Esta Política de Privacidad describe de manera clara y detallada cómo recopilamos, utilizamos, almacenamos, protegemos y compartimos la información que usted nos proporciona o que recopilamos automáticamente a través de nuestro sitio web, nuestros servicios digitales y nuestras herramientas asociadas (en adelante, "el Servicio").</p>
+                <p>Al acceder o utilizar Botify, usted acepta las prácticas descritas en esta política.</p>
+            </div>
+            
+            <div class="privacy-content">
+                <h3>1. Información que recopilamos</h3>
+                <p>1.1. Información proporcionada por el usuario</p>
+                <p>Podemos recopilar la siguiente información cuando usted se registra, completa formularios o interactúa con nuestros servicios:</p>
+                <ul>
+                    <li>Nombre completo</li>
+                    <li>Dirección de correo electrónico</li>
+                    <li>Nombre de usuario</li>
+                    <li>Información de contacto adicional (opcional)</li>
+                    <li>Información de pago y facturación (si aplica)</li>
+                    <li>Preferencias del usuario</li>
+                    <li>Comentarios o mensajes enviados al equipo de soporte</li>
+                </ul>
+
+                <p>1.2. Información recopilada automáticamente</p>
+                <p>Cuando accede a Botify, recopilamos automáticamente ciertos datos técnicos mediante cookies y tecnologías similares:</p>
+                <ul>
+                    <li>Dirección IP</li>
+                    <li>Tipo de navegador y sistema operativo</li>
+                    <li>Fechas y horas de acceso</li>
+                    <li>Páginas visitadas y tiempo de permanencia</li>
+                    <li>ID de dispositivo o identificadores únicos</li>
+                </ul>
+                
+                <h3>2. Uso de la información</h3>
+                <p>Utilizamos los datos recopilados para los siguientes fines:</p>
+                <ul>
+                    <li>Proveer, mantener y mejorar el funcionamiento del Servicio</li>
+                    <li>Personalizar la experiencia del usuario</li>
+                    <li>Procesar pagos y emitir facturas</li>
+                    <li>Responder consultas de soporte o contacto</li>
+                    <li>Analizar el comportamiento del usuario y mejorar la interfaz</li>
+                    <li>Notificar sobre actualizaciones, cambios en la política o términos</li>
+                    <li>Prevenir fraudes, abusos o accesos no autorizados</li>
+                </ul>
+
+                <h3>3. Cookies y tecnologías similares</h3>
+                <p>Utilizamos cookies propias y de terceros para mejorar la funcionalidad, realizar análisis estadísticos y ofrecer contenido personalizado. Puede configurar su navegador para rechazar o eliminar cookies, aunque esto puede afectar la funcionalidad del sitio.</p>
+                
+                <h3>4. Conservación de datos</h3>
+                <p>Botify retiene los datos personales únicamente durante el tiempo necesario para cumplir con los fines mencionados en esta política, cumplir obligaciones legales o resolver disputas.</p>
+                
+                <h3>5. Divulgación a terceros</h3>
+                <p>No vendemos, alquilamos ni compartimos su información personal con terceros, salvo en los siguientes casos:</p>
+                <ul>
+                    <li>Proveedores de servicios externos que colaboran con el mantenimiento, análisis o procesamiento (p. ej., servicios de alojamiento, procesadores de pago)</li>
+                    <li>Autoridades legales, si lo exige una orden judicial o para cumplir con la ley</li>
+                    <li>En caso de fusión, adquisición o venta de activos, previa notificación a los usuarios</li>
+                </ul>
+                
+                <h3>6. Seguridad de la información</h3>
+                <p>Adoptamos medidas técnicas, administrativas y físicas razonables para proteger los datos personales frente a accesos no autorizados, pérdidas, alteraciones o divulgaciones indebidas. Sin embargo, ningún sistema de seguridad es infalible.</p>
+                
+                <h3>7. Derechos del usuario</h3>
+                <p>Como usuario, usted tiene derecho a:</p>
+                <ul>
+                    <li>Acceder a sus datos personales</li>
+                    <li>Solicitar la corrección de datos inexactos</li>
+                    <li>Solicitar la eliminación de sus datos, salvo obligación legal de conservación</li>
+                    <li>Oponerse al procesamiento de sus datos</li>
+                    <li>Retirar su consentimiento en cualquier momento</li>
+                </ul>
+                <p>Puede ejercer estos derechos escribiéndonos a nuestro correo de contacto.</p>
+                
+                <h3>8. Menores de edad</h3>
+                <p>Botify no está dirigido a menores de 13 años (o edad mínima según la legislación local). No recopilamos intencionadamente información de menores. Si un padre/madre/tutor cree que su hijo/a nos ha proporcionado información personal, puede contactarnos para solicitar su eliminación.</p>
+
+                <h3>9. Cambios en esta política</h3>
+                <p>Botify puede actualizar esta Política de Privacidad ocasionalmente. Cuando se realicen cambios significativos, se notificará a los usuarios mediante el sitio web o por correo electrónico. Le recomendamos revisar esta política periódicamente.</p>
+
+                <h3>10. Contacto</h3>
+                <p>Si tiene preguntas, inquietudes o desea ejercer sus derechos en materia de protección de datos, puede comunicarse con nosotros a través de:</p>
+                <ul>
+                    <li>Correo electrónico: botify.dc@proton.me</li>
+                    <li>Sitio web: https://botifydc.netlify.app</li>
+                    <li>Discord: https://discord.gg/2ZvgGCYjDZ</li>
+                </ul>
+                <h4>Botify se compromete a proteger su privacidad con transparencia, integridad y respeto.</h4>
+            </div>
+        </div>
+    </section>
+
     <!-- Plan Details Modal -->
     <div class="modal-overlay" id="planModal">
         <div class="modal">
@@ -1283,6 +1435,7 @@
                     <li><a href="#" onclick="showPage('home')"><i class="fas fa-home"></i> Inicio</a></li>
                     <li><a href="#" onclick="showPage('about')"><i class="fas fa-users"></i> Nosotros</a></li>
                     <li><a href="#" onclick="showPage('pricing')"><i class="fas fa-tags"></i> Planes</a></li>
+                    <li><a href="#" onclick="showPage('privacy')"><i class="fas fa-shield-alt"></i> Política de Privacidad</a></li>
                 </ul>
             </div>
             
@@ -1618,6 +1771,49 @@
                 
                 particlesContainer.appendChild(icon);
             }
+        }
+
+        // Función para volver atrás
+        function goBack() {
+            // Si hay una página anterior, volvemos a ella
+            if (previousPage) {
+                showPage(previousPage);
+            } else {
+                // Si no hay registro de página anterior, vamos al inicio
+                showPage('home');
+            }
+        }
+        
+        // Variables para guardar la navegación
+        let currentPage = 'home';
+        let previousPage = null;
+        
+        // Modificamos showPage para guardar el historial
+        function showPage(pageId) {
+            // Actualizar historial
+            previousPage = currentPage;
+            currentPage = pageId;
+            
+            // Resto del código de showPage (sin cambios)
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            if(pageId === 'home') {
+                document.querySelector('.nav-links a:first-child').classList.add('active');
+            } else if(pageId === 'about') {
+                document.querySelectorAll('.nav-links a')[1].classList.add('active');
+            } else if(pageId === 'pricing') {
+                document.querySelectorAll('.nav-links a')[2].classList.add('active');
+            }
+            
+            window.scrollTo(0, 0);
         }
 
         // Tipo de cambio (1 USD = 1000 ARS)
