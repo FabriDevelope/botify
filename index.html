@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -906,6 +907,54 @@
             gap: 10px;
         }
 
+    /* Añado nuevos estilos para el selector de moneda */
+        .currency-selector-container {
+            text-align: center;
+            margin: 20px 0 40px;
+        }
+        
+        .currency-selector {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(46, 49, 54, 0.7);
+            padding: 10px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 10px;
+        }
+        
+        .currency-selector label {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .currency-selector select {
+            background: var(--darker);
+            color: var(--light);
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .currency-selector select:hover {
+            border-color: var(--secondary);
+        }
+        
+        .currency-selector select:focus {
+            box-shadow: 0 0 0 2px rgba(87, 242, 135, 0.4);
+        }
+        
+        /* Añado más espacio para el badge popular en móviles */
+        @media (max-width: 768px) {
+            .pricing-card .popular-badge {
+                right: -35px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -999,6 +1048,7 @@
         <div class="pricing">
             <h2 class="section-title">Planes Populares</h2>
             <p class="section-subtitle">Soluciones adaptadas a todo tipo de comunidades</p>
+
             
             <div class="pricing-container">
                 <div class="pricing-card animate-on-scroll" data-plan="starter">
@@ -1062,6 +1112,17 @@
         <div class="pricing">
             <h2 class="section-title">Nuestros Planes</h2>
             <p class="section-subtitle">Elige el paquete perfecto para tu comunidad</p>
+            
+            <!-- Selector de moneda -->
+            <div class="currency-selector-container">
+                <div class="currency-selector">
+                    <label for="currency">Moneda:</label>
+                    <select id="currency">
+                        <option value="USD">USD (Dólares)</option>
+                        <option value="ARS">ARS (Pesos argentinos)</option>
+                    </select>
+                </div>
+            </div>
             
             <div class="pricing-container">
                 <div class="pricing-card animate-on-scroll" data-plan="starter">
@@ -1159,7 +1220,7 @@
                 <div class="pricing-card animate-on-scroll" data-plan="personalizado">
                     <div class="pricing-header">
                         <h3 class="pricing-title">Personalizado</h3>
-                        <div class="pricing-price"> 100-120 USD$</div>
+                        <div class="pricing-price"> Desde 80 USD$</div>
                         <div class="pricing-period">Paquete único</div>
                     </div>
                     <ul class="pricing-features">
@@ -1323,7 +1384,7 @@
     },
     personalizado: {
         title: "Personalizado",
-        price: "100 - 120 USD",
+        price: "Desde 80 USD",
         period: "Paquete único",
         description: "Servicio premium con entrega ultrarrápida para proyectos urgentes y exclusivos.",
         features: [
@@ -1558,6 +1619,70 @@
                 particlesContainer.appendChild(icon);
             }
         }
+
+        // Tipo de cambio (1 USD = 1000 ARS)
+        const EXCHANGE_RATE = 1330;
+        
+        // Actualizar precios según la moneda seleccionada
+        function updatePrices(currency) {
+            const pricingCards = document.querySelectorAll('.pricing-card');
+            
+            pricingCards.forEach(card => {
+                const priceElement = card.querySelector('.pricing-price');
+                const periodElement = card.querySelector('.pricing-period');
+                const plan = card.getAttribute('data-plan');
+                
+                // Precios originales en USD
+                const usdPrices = {
+                    'starter': '5-10',
+                    'pro': '15-20',
+                    'premium': '25-30',
+                    'web': '40',
+                    'express': '60-65',
+                    'personalizado': '80'
+                };
+                
+                if (currency === 'ARS') {
+                    // Convertir a pesos argentinos
+                    if (usdPrices[plan].includes('-')) {
+                        const [min, max] = usdPrices[plan].split('-').map(Number);
+                        const minARS = min * EXCHANGE_RATE;
+                        const maxARS = max * EXCHANGE_RATE;
+                        priceElement.textContent = `${minARS.toLocaleString('es-AR')}-${maxARS.toLocaleString('es-AR')} ARS$`;
+                    } else {
+                        const price = Number(usdPrices[plan]) * EXCHANGE_RATE;
+                        priceElement.textContent = `${price.toLocaleString('es-AR')} ARS$`;
+                    }
+                    
+                    // Actualizar el período si es necesario
+                    if (periodElement.textContent.includes('USD$')) {
+                        periodElement.textContent = periodElement.textContent.replace('USD$', 'ARS$');
+                    }
+                } else {
+                    // Volver a dólares
+                    priceElement.textContent = `${usdPrices[plan]} USD$`;
+                    
+                    // Restaurar el período original
+                    const originalPeriods = {
+                        'starter': 'Paquete único',
+                        'pro': 'Pensado para comunidades en crecimiento, creadores de contenido o proyectos con más actividad.',
+                        'premium': 'Hecho para marcas, grandes comunidades o proyectos que buscan un servidor de alta calidad.',
+                        'web': 'Paquete único',
+                        'express': 'Paquete único',
+                        'personalizado': 'Paquete único'
+                    };
+                    periodElement.textContent = originalPeriods[plan];
+                }
+            });
+        }
+        
+        // Manejar cambio de moneda
+        document.getElementById('currency').addEventListener('change', function() {
+            updatePrices(this.value);
+        });
+        
+        // Inicializar precios en USD
+        updatePrices('USD');
         
         // Initialize animations
         createParticles();
